@@ -26,7 +26,7 @@
       "email":"admin@gmail.com",
       "password": "123456",
       "response": {
-        "email": "yunusoncel@gmail.com",
+        "email": "admin@gmail.com",
         "name": "Yunus ÖNCEL",
         "role": "ROLE_ADMIN"
       }
@@ -35,7 +35,7 @@
       "email": "sadmin@gmail.com",
       "password": "123456",
       "response": {
-        "email": "yunusoncel@gmail.com",
+        "email": "sadmin@gmail.com",
         "name": "Yunus ÖNCEL",
         "role": "ROLE_SADMIN"
       }

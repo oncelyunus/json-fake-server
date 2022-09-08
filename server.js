@@ -20,14 +20,14 @@ app.use(express.json())
 app.use(cors())
 
 const verifyToken = (req, res, next) => {
-    const bearerHeader = req.headers["Authorization"];
+    const bearerHeader = req.headers["authorization"];
     if (bearerHeader !== undefined) {
         const bearer = bearerHeader.split(" ");
         const bearerToken = bearer[1];
         req.token = bearerToken;
         next();
     } else {
-        res.send({
+        res.status(403).send({
             "status": "403",
             "title": "Token Not Found",
             "detail": "Token Not Found",
@@ -66,7 +66,7 @@ app.post("/login", async (req, res, next) => {
     const reqBody = req.body;
     const user = users.find((u) => u.email === reqBody.email && u.password === reqBody.password)
     if (!user) {
-        res.send({
+        res.status(404).send({
             "status": "404",
             "title": "Incorrect username or password.",
             "detail": "Authentication failed due to incorrect username or password.",
@@ -77,17 +77,16 @@ app.post("/login", async (req, res, next) => {
         jwt.sign(user.response, "secretKey", (err, token) => {
             res.json({
                 accessToken: token,
-                user: user
+                user: user.response
             })
         })
-
     }
 })
 
 app.post("/me", verifyToken, async (req, res) => {
     jwt.verify(req.token, "secretKey", (err, authData) => {
         if (err) {
-            res.send({
+            res.status(403).send({
                 "status": "403",
                 "title": "Invalid Token",
                 "detail": "Invalid Token",
@@ -95,7 +94,8 @@ app.post("/me", verifyToken, async (req, res) => {
             })
         } else {
             res.json({
-                userData: authData
+                accessToken: req.token,
+                user: authData
             })
         }
     })
